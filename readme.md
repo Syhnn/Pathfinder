@@ -7,7 +7,7 @@ First step is implementing BFS and displaying it, then clean the code and prepar
 
 Here's BFS at work for the first step :
 
-![](bfs2.gif)
+![](bfs2_low_quality.gif)
 
 Going well so far.
 
