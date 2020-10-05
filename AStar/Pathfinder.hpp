@@ -23,10 +23,12 @@ public:
   std::set<std::pair<int, int>> getVisited() { return visited; }
   std::deque<std::pair<int, int>> getDiscovered() { return discovered; }
   std::vector<std::pair<int, int>> getPath() { return path; }
-  void reset() { started = false; path_found = false; }
+  void reset();
 
 private:
   void initBFS();
+  bool reconstructPath();
+  void nextStep();
 
   bool started;
   bool path_found;

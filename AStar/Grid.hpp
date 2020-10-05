@@ -1,7 +1,6 @@
 #ifndef _GRID_HPP_
 #define _GRID_HPP_
 
-#include <set>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -28,12 +27,12 @@ public:
   void setWall(std::pair<int, int> pos, bool blocked);
   void invertWall(std::pair<int, int> pos);
   std::vector<std::vector<int>> getGridState();
+  std::unordered_set<std::pair<int, int>, pair_hash> getWalls();
 
 private:
   int width;
   int height;
-  //std::unordered_set<std::pair<int, int>, pair_hash> walls;
-  std::set<std::pair<int, int>> walls;
+  std::unordered_set<std::pair<int, int>, pair_hash> walls;
 };
 
 #endif // _GRID_HPP_

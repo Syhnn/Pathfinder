@@ -65,16 +65,20 @@ void Grid::invertWall(pair<int, int> pos) {
   }
 }
 
- vector<vector<int>> Grid::getGridState() {
+vector<vector<int>> Grid::getGridState() {
   vector<vector<int>> grid(width, vector<int>(height, 0));
   for (auto wall : walls) {
-    if (wall.first  >= 0     &&
-        wall.first  <  width &&
-        wall.second >= 0     &&
-        wall.second <  height) {
+    if (wall.first >= 0 &&
+      wall.first < width &&
+      wall.second >= 0 &&
+      wall.second < height) {
       grid[wall.first][wall.second] = 1;
     }
   }
 
   return grid;
+}
+
+unordered_set<pair<int, int>, pair_hash> Grid::getWalls() {
+  return walls;
 }

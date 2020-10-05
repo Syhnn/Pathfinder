@@ -20,15 +20,22 @@ public:
 
   void mainloop();
 
-  void handle_inputs();
+  void handleInputs();
   void update();
   void display();
 
   bool init();
 
 private:
+  void restart();
+
   bool quit;
-  bool first;
+  bool clear_grid;
+  bool redraw_walls;
+  bool path_found;
+  bool playing;
+
+  int step_count;
 
   Window* main_window;
 

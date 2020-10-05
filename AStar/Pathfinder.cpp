@@ -20,43 +20,16 @@ Pathfinder::Pathfinder(Grid* g, pair<int, int> s, pair<int, int> f) :
 bool Pathfinder::breadthFirstSearchStep() {
   if (!started) {
     initBFS();
-    started = true;
   } else if (path_found) {
-    if (came_from.find(path.back()) != came_from.end()) {
-      path.push_back(came_from[path.back()]);
-    } else {
-      return false;
-    }
+    return reconstructPath();
   } else if (!discovered.empty()) {
-    pair<int, int> current = discovered.front();
-    discovered.pop_front();
-
-    if (current == finish) {
-      path_found = true;
-      path.push_back(finish);
-    }
-
-    for (pair<int, int> node : graph->neighbors(current)) {
-      if (visited.find(node) == visited.end()) {
-        if (find(discovered.begin(), discovered.end(), node) == discovered.end())
-          discovered.push_back(node);
-        came_from.insert(make_pair(node, current));
-      }
-    }
-
-    visited.insert(current);
+    nextStep();
+  } else {
+    // no path
+    return true;
   }
 
-  return true;
-}
-
-void Pathfinder::initBFS() {
-  discovered.clear();
-  visited.clear();
-  came_from.clear();
-  path.clear();
-
-  discovered.push_back(start);
+  return false;
 }
 
 vector<vector<int>> Pathfinder::getGridState() {
@@ -89,4 +62,52 @@ void Pathfinder::setFinish(pair<int, int> f) {
   finish = f;
   started = false;
   path_found = false;
+}
+
+void Pathfinder::reset() {
+  started = false;
+  path_found = false;
+  initBFS();
+}
+
+
+// Private methods
+
+void Pathfinder::initBFS() {
+  discovered.clear();
+  visited.clear();
+  came_from.clear();
+  path.clear();
+
+  discovered.push_back(start);
+
+  started = true;
+}
+
+bool Pathfinder::reconstructPath() {
+  if (came_from.find(path.back()) != came_from.end()) {
+    path.push_back(came_from[path.back()]);
+    return false;
+  }
+  return true;
+}
+
+void Pathfinder::nextStep() {
+  pair<int, int> current = discovered.front();
+  discovered.pop_front();
+
+  if (current == finish) {
+    path_found = true;
+    path.push_back(finish);
+  }
+
+  for (pair<int, int> node : graph->neighbors(current)) {
+    if (visited.find(node) == visited.end()) {
+      if (find(discovered.begin(), discovered.end(), node) == discovered.end())
+        discovered.push_back(node);
+      came_from.insert(make_pair(node, current));
+    }
+  }
+
+  visited.insert(current);
 }
