@@ -2,14 +2,15 @@
 
 Just a small personnal project I recently started to experiment and have fun with pathfinding algorithms.
 
-I'm planning on implementing A* and creating a small GUI to better display how it works and interract with it.
-First step is implementing BFS and displaying it, then clean the code and prepare for more advanced manipulations and A*.
+I implemented the BFS pathfinding algorithm, and later replaced it with A* - at least a v1 for now - and created a very simple UI to display it while it works.
+Here it is in a low fps gif :
 
-Here's BFS at work for the first step (gif not up-to-date) :
+![](astarv1.gif)
 
-![](bfs2_low_quality.gif)
+Going well so far.  
+I'd like to clean the code a bit (it is quite messy in some places) and also make it so the path looks a little better.  
+After that if I have enough time I'll probably try it on weighted map to see how it react to actual terrain.
 
-Going well so far.
 
 ## Libraries used
 
