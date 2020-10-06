@@ -7,8 +7,8 @@ Here it is in a low fps gif :
 
 ![](astarv1.gif)
 
-Going well so far.  
-I'd like to clean the code a bit (it is quite messy in some places) and also make it so the path looks a little better.  
+Going well so far. But there are still things to correct. It finds the best possible path but sometimes lose time by checking nodes it shouldn't.  
+I'd like to clean the code a bit (it is quite messy in some places) and also make it so the path look a little better.  
 After that if I have enough time I'll probably try it on weighted map to see how it react to actual terrain.
 
 
