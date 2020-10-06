@@ -23,13 +23,40 @@ bool Pathfinder::breadthFirstSearchStep() {
   } else if (path_found) {
     return reconstructPath();
   } else if (!discovered.empty()) {
-    nextStep();
+    nextBFSStep();
   } else {
     // no path
     return true;
   }
 
   return false;
+}
+
+void Pathfinder::resetBFS() {
+  started = false;
+  path_found = false;
+  initBFS();
+}
+
+bool Pathfinder::aStarStep() {
+  if (!started) {
+    initAStar();
+  } else if (path_found) {
+    return reconstructPath();
+  } else if (!frontier.empty()) {
+    nextAStarStep();
+  } else {
+    // no path
+    return true;
+  }
+
+  return false;
+}
+
+void Pathfinder::resetAStar() {
+  started = false;
+  path_found = false;
+  initAStar();
 }
 
 vector<vector<int>> Pathfinder::getGridState() {
@@ -64,12 +91,6 @@ void Pathfinder::setFinish(pair<int, int> f) {
   path_found = false;
 }
 
-void Pathfinder::reset() {
-  started = false;
-  path_found = false;
-  initBFS();
-}
-
 
 // Private methods
 
@@ -92,7 +113,7 @@ bool Pathfinder::reconstructPath() {
   return true;
 }
 
-void Pathfinder::nextStep() {
+void Pathfinder::nextBFSStep() {
   pair<int, int> current = discovered.front();
   discovered.pop_front();
 
@@ -106,6 +127,45 @@ void Pathfinder::nextStep() {
       if (find(discovered.begin(), discovered.end(), node) == discovered.end())
         discovered.push_back(node);
       came_from.insert(make_pair(node, current));
+    }
+  }
+
+  visited.insert(current);
+}
+
+void Pathfinder::initAStar() {
+  frontier.clear();
+  cost.clear();
+  came_from.clear();
+
+  cost.insert(make_pair(start, 0));
+  frontier.insert(make_pair(start, 0));
+
+  started = true;
+}
+
+void Pathfinder::nextAStarStep() {
+  int prio = frontier.begin()->second;
+  pair<int, int> current = frontier.begin()->first;
+  for (auto node : frontier) {
+    if (node.second < prio) {
+      prio = node.second;
+      current = node.first;
+    }
+  }
+  frontier.erase(current);
+
+  if (current == finish) {
+    path_found = true;
+    path.push_back(finish);
+  }
+
+  for (pair<int, int> node : graph->neighbors(current)) {
+    int new_cost = cost[current] + 1; // change that to get weighted map values
+    if (cost.find(node) == cost.end() || cost[node] > new_cost) {
+      cost[node] = new_cost;
+      frontier[node] = new_cost + graph->heuristic(node, finish);
+      came_from[node] = current;
     }
   }
 

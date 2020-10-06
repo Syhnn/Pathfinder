@@ -41,7 +41,6 @@ private:
   int mousex;
   int mousey;
 
-
   Window* main_window;
 
   Pathfinder p;

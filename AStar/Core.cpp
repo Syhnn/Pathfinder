@@ -83,7 +83,7 @@ void Core::handleInputs() {
 
 void Core::update() {
   if ((playing || step_count > 0) && !path_found) {
-    path_found = p.breadthFirstSearchStep();
+    path_found = p.aStarStep();
     if (step_count)
       --step_count;
   }
@@ -117,28 +117,28 @@ void Core::display() {
 
   if (redraw_walls) {
     redraw_walls = false;
-    main_window->setColor(0xaa, 0xaa, 0xdd, 0xff);
+    main_window->setColor(0x55, 0x75, 0x71, 0xff);
     for (auto node : g.getWalls()) {
       main_window->drawRectagle(GRID_TILE_SIZE * node.first + 1, GRID_TILE_SIZE * node.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
     }
   }
-  
-  main_window->setColor(0xee, 0x3a, 0x3a, 0xff);
-  for (auto node : p.getDiscovered()) {
-    main_window->drawRectagle(GRID_TILE_SIZE * node.first + 1, GRID_TILE_SIZE * node.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
+
+  main_window->setColor(0xa6, 0xdc, 0xef, 0xff);
+  for (auto node : p.getCost()) {//p.getVisited()) {
+    main_window->drawRectagle(GRID_TILE_SIZE * node.first.first + 1, GRID_TILE_SIZE * node.first.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
   }
-  main_window->setColor(0xaa, 0xdd, 0xaa, 0xff);
-  for (auto node : p.getVisited()) {
-    main_window->drawRectagle(GRID_TILE_SIZE * node.first + 1, GRID_TILE_SIZE * node.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
+  main_window->setColor(0x70, 0x9f, 0xb0, 0xff);
+  for (auto node : p.getFrontier()) {//p.getDiscovered()) {
+    main_window->drawRectagle(GRID_TILE_SIZE * node.first.first + 1, GRID_TILE_SIZE * node.first.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
   }
-  main_window->setColor(0xdd, 0xaa, 0xdd, 0xff);
+  main_window->setColor(0xdb, 0xc6, 0xeb, 0xff);
   for (auto node : p.getPath()) {
     main_window->drawRectagle(GRID_TILE_SIZE * node.first + 1, GRID_TILE_SIZE * node.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
   }
 
-  main_window->setColor(0x5a, 0xee, 0x5a, 0xff);
+  main_window->setColor(0x86, 0x75, 0xa9, 0xff);
   main_window->drawRectagle(GRID_TILE_SIZE * start.first + 1, GRID_TILE_SIZE * start.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
-  main_window->setColor(0xee, 0x3a, 0x3a, 0xff);
+  main_window->setColor(0x86, 0x75, 0xa9, 0xff);
   main_window->drawRectagle(GRID_TILE_SIZE * finish.first + 1, GRID_TILE_SIZE * finish.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
   main_window->render();
 }
@@ -170,7 +170,8 @@ bool Core::init() {
 // Private methods
 
 void Core::restart() {
-  p.reset();
+  p.resetBFS();
+  p.resetAStar();
   clear_grid = true;
   path_found = false;
 }

@@ -26,7 +26,7 @@ bool Window::init() {
     return false;
   }
 
-  window = SDL_CreateWindow("Title", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+  window = SDL_CreateWindow("Pathfinding adventure", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
   if (window == nullptr) {
     cout << "Window could not be created - SDL_Error:\n" << SDL_GetError() << endl;
     SDL_Quit();
@@ -99,13 +99,6 @@ void Window::drawRectagle(int x, int y, int w, int h) {
 }
 
 void Window::drawButtons() {
-  //SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xff);
-  //SDL_RenderDrawLine(renderer, 0, SCREEN_HEIGHT - 1, SCREEN_WIDTH, SCREEN_HEIGHT - 1);
-  //SDL_RenderDrawLine(renderer, 0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, SCREEN_HEIGHT - 50);
-  //SDL_RenderDrawLine(renderer, 0, SCREEN_HEIGHT - 50, 0, SCREEN_HEIGHT);
-  //SDL_RenderDrawLine(renderer, SCREEN_WIDTH / 3, SCREEN_HEIGHT - 50, SCREEN_WIDTH / 3, SCREEN_HEIGHT);
-  //SDL_RenderDrawLine(renderer, 2 * SCREEN_WIDTH / 3, SCREEN_HEIGHT - 50, 2 * SCREEN_WIDTH / 3, SCREEN_HEIGHT);
-  //SDL_RenderDrawLine(renderer, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 50, SCREEN_WIDTH - 1, SCREEN_HEIGHT);
   SDL_Rect bottom_panel = { 0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50 };
   SDL_RenderCopy(renderer, buttons_pict, NULL, &bottom_panel);
 }
