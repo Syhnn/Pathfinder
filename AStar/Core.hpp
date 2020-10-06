@@ -34,20 +34,22 @@ private:
   bool redraw_walls;
   bool path_found;
   bool playing;
+  bool click;
+  bool wall_state;
 
   int step_count;
+  int mousex;
+  int mousey;
+
 
   Window* main_window;
 
-
-  /////
   Pathfinder p;
   Grid g;
 
   std::pair<int, int> start;
   std::pair<int, int> finish;
-
-  /////
+  std::pair<int, int> pos;
 };
 
 #endif // _CORE_HPP_

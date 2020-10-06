@@ -16,11 +16,21 @@ Core::Core() :
   redraw_walls(true),
   path_found(false),
   playing(false),
+  click(false),
+  wall_state(false),
+
   step_count(0),
+  mousex(0),
+  mousey(0),
+
   main_window(new Window()),
-  g(GRID_WIDTH, GRID_HEIGHT),
-  start(10, 10), 
+
+  start(10, 10),
   finish(35, 20),
+  pos(0, 0),
+
+  g(GRID_WIDTH, GRID_HEIGHT),
+
   p(&g, make_pair(10, 10), make_pair(35, 20))
 {
   for (int i(0); i < 25; ++i)
@@ -37,26 +47,35 @@ Core::~Core() {
 void Core::handleInputs() {
   SDL_Event e;
 
+  if (click) {
+    SDL_GetMouseState(&mousex, &mousey);
+  }
+
   while (SDL_PollEvent(&e) != 0) {
     if (e.type == SDL_QUIT) {
       quit = true;
     } else if (e.type == SDL_MOUSEBUTTONDOWN) {
-      // on left click, toggle walls
       if (e.button.button == SDL_BUTTON_LEFT) {
-        int x(0), y(0);
-        SDL_GetMouseState(&x, &y);
-        if (y < GRID_TILE_SIZE * GRID_HEIGHT) {
-          g.invertWall(make_pair(x / GRID_TILE_SIZE, y / GRID_TILE_SIZE));
+        SDL_GetMouseState(&mousex, &mousey);
+        if (mousey < GRID_TILE_SIZE * GRID_HEIGHT) {
+          click = true;
+          pos = make_pair(mousex / GRID_TILE_SIZE, mousey / GRID_TILE_SIZE);
+          wall_state = g.empty(pos);
+          g.invertWall(pos);
           restart();
         } else {
-          if (x < SCREEN_WIDTH / 3) {
+          if (mousex < SCREEN_WIDTH / 3) {
             restart();
-          } else if (x < 2 * SCREEN_WIDTH / 3) {
+          } else if (mousex < 2 * SCREEN_WIDTH / 3) {
             playing = !playing;
           } else {
             ++step_count;
           }
         }
+      }
+    } else if (e.type == SDL_MOUSEBUTTONUP) {
+      if (e.button.button == SDL_BUTTON_LEFT) {
+        click = false;
       }
     }
   }
@@ -67,6 +86,17 @@ void Core::update() {
     path_found = p.breadthFirstSearchStep();
     if (step_count)
       --step_count;
+  }
+
+  if (click) {
+    pair<int, int> newpos = make_pair(mousex / GRID_TILE_SIZE, mousey / GRID_TILE_SIZE);
+    if (newpos != pos) {
+      pos = newpos;
+      if (g.empty(newpos) == wall_state) {
+        g.invertWall(pos);
+        restart();
+      }
+    }
   }
 }
 
@@ -114,21 +144,16 @@ void Core::display() {
 }
 
 void Core::mainloop() {
-  Uint32 start_time;
   Uint32 time;
 
-  start_time = SDL_GetTicks();
+  time = SDL_GetTicks();
   while (!quit) {
     handleInputs();
     update();
-    if (SDL_GetTicks() - start_time > SCREEN_TICKS_PER_FRAME) {
+    if (SDL_GetTicks() - time > SCREEN_TICKS_PER_FRAME) {
       display();
-      start_time = SDL_GetTicks();
+      time = SDL_GetTicks();
     }
-    //time = SDL_GetTicks() - start_time;
-    //if (time < SCREEN_TICKS_PER_FRAME) {
-    //  SDL_Delay(SCREEN_TICKS_PER_FRAME - time);
-    //}
   }
 }
 

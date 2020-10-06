@@ -2,8 +2,7 @@
 #define _PATHFINDER_HPP_
 
 #include <deque>
-#include <map>
-#include <set>
+#include <unordered_set>
 #include <unordered_map>
 
 #include "Grid.hpp"
@@ -20,7 +19,7 @@ public:
   std::vector<std::vector<int>> getGridState();
   void setStart(std::pair<int, int> s);
   void setFinish(std::pair<int, int> f);
-  std::set<std::pair<int, int>> getVisited() { return visited; }
+  std::unordered_set<std::pair<int, int>, pair_hash> getVisited() { return visited; }
   std::deque<std::pair<int, int>> getDiscovered() { return discovered; }
   std::vector<std::pair<int, int>> getPath() { return path; }
   void reset();
@@ -39,10 +38,8 @@ private:
   std::pair<int, int> finish;
   std::vector<std::pair<int, int>> path;
   std::deque<std::pair<int, int>> discovered;
-  //std::unordered_set<std::pair<int, int>, pair_hash> visited;
-  std::set<std::pair<int, int>> visited;
-  //std::unordered_map<std::pair<int, int>, std::pair<int, int>, pair_hash> came_from;
-  std::map<std::pair<int, int>, std::pair<int, int>> came_from;
+  std::unordered_set<std::pair<int, int>, pair_hash> visited;
+  std::unordered_map<std::pair<int, int>, std::pair<int, int>, pair_hash> came_from;
 };
 
 #endif // _PATHFINDER_HPP_
