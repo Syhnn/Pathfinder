@@ -137,6 +137,7 @@ void Pathfinder::initAStar() {
   frontier.clear();
   cost.clear();
   came_from.clear();
+  path.clear();
 
   cost.insert(make_pair(start, 0));
   frontier.insert(make_pair(start, 0));
@@ -145,7 +146,7 @@ void Pathfinder::initAStar() {
 }
 
 void Pathfinder::nextAStarStep() {
-  int prio = frontier.begin()->second;
+  double prio = frontier.begin()->second;
   pair<int, int> current = frontier.begin()->first;
   for (auto node : frontier) {
     if (node.second < prio) {
@@ -161,7 +162,7 @@ void Pathfinder::nextAStarStep() {
   }
 
   for (pair<int, int> node : graph->neighbors(current)) {
-    int new_cost = cost[current] + 1; // change that to get weighted map values
+    double new_cost = cost[current] + graph->moveCost(current, node);
     if (cost.find(node) == cost.end() || cost[node] > new_cost) {
       cost[node] = new_cost;
       frontier[node] = new_cost + graph->heuristic(node, finish);

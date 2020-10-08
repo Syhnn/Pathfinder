@@ -37,8 +37,12 @@ bool Grid::empty(pair<int, int> pos) {
   return walls.find(pos) == walls.end();
 }
 
-int Grid::heuristic(pair<int, int> posa, pair<int, int> posb) {
-  return  abs(posa.first - posb.first) +  abs(posa.second - posb.second);
+double Grid::heuristic(pair<int, int> posa, pair<int, int> posb) {
+  return (static_cast<double>(abs(posa.first - posb.first)) + static_cast<double>(abs(posa.second - posb.second))) * 1.001;
+}
+
+double Grid::moveCost(pair<int, int> posa, pair<int, int> posb) {
+  return 1; // add weighted terrain later
 }
 
 void Grid::setWall(pair<int, int> pos, bool blocked) {

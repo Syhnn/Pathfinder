@@ -31,8 +31,8 @@ public:
   std::unordered_set<std::pair<int, int>, pair_hash> getVisited() { return visited; }
   std::deque<std::pair<int, int>> getDiscovered() { return discovered; }
   std::vector<std::pair<int, int>> getPath() { return path; }
-  std::unordered_map<std::pair<int, int>, int, pair_hash> getCost() { return cost; }
-  std::unordered_map<std::pair<int, int>, int, pair_hash> getFrontier() { return frontier; }
+  std::unordered_map<std::pair<int, int>, double, pair_hash> getCost() { return cost; }
+  std::unordered_map<std::pair<int, int>, double, pair_hash> getFrontier() { return frontier; }
 
 private:
   void initBFS();
@@ -52,8 +52,8 @@ private:
   std::pair<int, int> finish;
   std::vector<std::pair<int, int>> path;
   std::deque<std::pair<int, int>> discovered;
-  std::unordered_map<std::pair<int, int>, int, pair_hash> frontier;
-  std::unordered_map<std::pair<int, int>, int, pair_hash> cost;
+  std::unordered_map<std::pair<int, int>, double, pair_hash> frontier;
+  std::unordered_map<std::pair<int, int>, double, pair_hash> cost;
   std::unordered_set<std::pair<int, int>, pair_hash> visited;
   std::unordered_map<std::pair<int, int>, std::pair<int, int>, pair_hash> came_from;
 };

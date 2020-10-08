@@ -1,6 +1,5 @@
 #include "Core.hpp"
 
-
 #include <iostream>
 #include "SDL.h"
 
@@ -60,9 +59,11 @@ void Core::handleInputs() {
         if (mousey < GRID_TILE_SIZE * GRID_HEIGHT) {
           click = true;
           pos = make_pair(mousex / GRID_TILE_SIZE, mousey / GRID_TILE_SIZE);
-          wall_state = g.empty(pos);
-          g.invertWall(pos);
-          restart();
+          if (!(pos == start) && !(pos == finish)) {
+            wall_state = g.empty(pos);
+            g.invertWall(pos);
+            restart();
+          }
         } else {
           if (mousex < SCREEN_WIDTH / 3) {
             restart();
@@ -92,7 +93,7 @@ void Core::update() {
     pair<int, int> newpos = make_pair(mousex / GRID_TILE_SIZE, mousey / GRID_TILE_SIZE);
     if (newpos != pos) {
       pos = newpos;
-      if (g.empty(newpos) == wall_state) {
+      if (g.empty(newpos) == wall_state && (!(newpos == start) && !(newpos == finish))) {
         g.invertWall(pos);
         restart();
       }
@@ -124,11 +125,11 @@ void Core::display() {
   }
 
   main_window->setColor(0xa6, 0xdc, 0xef, 0xff);
-  for (auto node : p.getCost()) {//p.getVisited()) {
+  for (auto node : p.getCost()) {
     main_window->drawRectagle(GRID_TILE_SIZE * node.first.first + 1, GRID_TILE_SIZE * node.first.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
   }
   main_window->setColor(0x70, 0x9f, 0xb0, 0xff);
-  for (auto node : p.getFrontier()) {//p.getDiscovered()) {
+  for (auto node : p.getFrontier()) {
     main_window->drawRectagle(GRID_TILE_SIZE * node.first.first + 1, GRID_TILE_SIZE * node.first.second + 1, GRID_TILE_SIZE - 1, GRID_TILE_SIZE - 1);
   }
   main_window->setColor(0xdb, 0xc6, 0xeb, 0xff);
@@ -170,13 +171,7 @@ bool Core::init() {
 // Private methods
 
 void Core::restart() {
-  p.resetBFS();
   p.resetAStar();
   clear_grid = true;
   path_found = false;
 }
-
-// measure exec time
-//#include <chrono>
-//std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-//cout << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start).count() << endl;

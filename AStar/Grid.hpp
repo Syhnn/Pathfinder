@@ -22,7 +22,8 @@ public:
   Grid(int w, int h);
 
   std::vector<std::pair<int, int>> neighbors(std::pair<int, int> pos);
-  int heuristic(std::pair<int, int> posa, std::pair<int, int> posb);
+  double heuristic(std::pair<int, int> posa, std::pair<int, int> posb);
+  double moveCost(std::pair<int, int> posa, std::pair<int, int> posb);
   bool empty(std::pair<int, int> pos);
   void setWall(std::pair<int, int> pos, bool blocked);
   void invertWall(std::pair<int, int> pos);
