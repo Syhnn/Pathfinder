@@ -17,6 +17,6 @@ After that if I have enough time I'll probably try it on weighted map to see how
 ## Libraries used
 
 For now I mostly used [SDL2](https://libsdl.org/) which is a low level library used to do many things from rendering to handling sound and game controllers. 
-On this project I only used it to render the grid so far.  
+On this project I only used it to render the grid and handle the mouse inputs.  
 
 I also used [SDL_Image](https://www.libsdl.org/projects/SDL_image/) which allows me to use png image instead of bmp. Think of it as an extension on SDL.
