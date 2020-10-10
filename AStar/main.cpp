@@ -1,7 +1,6 @@
 #include "Core.hpp"
 
 
-// test comment
 int main(int argc, char* argv[]) {
   Core core;
 
